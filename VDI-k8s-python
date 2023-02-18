@@ -39,7 +39,7 @@ variable "dotfiles_uri" {
 
   see https://dotfiles.github.io
   EOF
-  default = "git@github.com:sharkymark/dotfiles.git"
+  default = "git@github.com:@mjasten32/dotfiles.git"
 }
 
 variable "cpu" {

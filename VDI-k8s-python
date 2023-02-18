@@ -98,9 +98,6 @@ cp /etc/zsh/newuser.zshrc.recommended $HOME/.zshrc
 echo "Initializing Supervisor..."
 nohup supervisord
 
-# the dockerfile with eclipse
-# https://github.com/sharkymark/dockerfiles/blob/main/eclipse/Dockerfile
-
 # eclipse
 DISPLAY=:90 /opt/eclipse/eclipse -data /home/coder sh &
 
@@ -111,10 +108,15 @@ code-server --auth none --port 13337 &
 # use coder CLI to clone and install dotfiles
 coder dotfiles -y ${var.dotfiles_uri}
 
-# clone repo
-mkdir -p ~/.ssh
-ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts
-git clone --progress git@github.com:sharkymark/java_helloworld.git
+#brew install
+curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install wget
+
+#pip install
+brew install pip
+
+#python install
+brew install python3
 
 EOT
 }
@@ -166,9 +168,9 @@ resource "kubernetes_pod" "main" {
     }     
     container {
       name    = "eclipse"
-      image   = "docker.io/marktmilligan/eclipse-vnc:latest"
+      image   = "docker.io/michaelcoder0/coder-templates
       command = ["sh", "-c", coder_agent.coder.init_script]
-      image_pull_policy = "Always"
+      image_pull_policy = "Never"
       security_context {
         run_as_user = "1000"
       }
@@ -228,7 +230,7 @@ resource "coder_metadata" "workspace_info" {
   }  
   item {
     key   = "image"
-    value = "docker.io/marktmilligan/eclipse-vnc:latest"
+    value = "docker.io/michaelcoder0/coder-templates"
   } 
   item {
     key   = "disk"
